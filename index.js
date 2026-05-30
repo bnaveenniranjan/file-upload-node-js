@@ -43,15 +43,19 @@ let upload = multer({
  app.get('/',(req,res)=>{
     res.render('signup')
  })
-app.post('/upload',(req,res)=>{
+app.post('/upload',(req,res,next)=>{
 
     upload(req,res,function(err){
 
-        if(err){
+        if(err instanceof multer .MulterError && err.code =="LIMIT_FILE_SIZE"){
+            if(err.code == "LIMIT_FILE_SIZE"){
+              return   res.send('File size is maximum 2mb');
+            }
             return res.send(err);
-        }
+        }else{
 
         res.send("Success! Image Uploaded");
+        }
 
     });
 
